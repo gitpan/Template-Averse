@@ -1,0 +1,9 @@
+my %hash =
+(
+    Tr => { keep=>1,
+            LocalName=>'tr',
+            vars=>[qw( $arg1 $arg2 )],
+          }
+);
+
+\%hash; # return ref to the hash

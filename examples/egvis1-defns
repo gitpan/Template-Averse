@@ -1,0 +1,5 @@
+ my %tags = ( thesub  => { vars=>[qw($name $title)] },
+              showboss    => {},
+              showjanitor => {},
+            );
+ \%tags;

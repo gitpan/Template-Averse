@@ -1,0 +1,54 @@
+#!/usr/bin/perl
+
+# this runs the compiled eg1 template
+# compile and run the template as follows
+
+#  $ perl averse-tcxml egvis3-defns egvis3-xml > egvis3.do
+#  $ perl egvis3-pl
+
+do "egvis3.do";
+
+print Template::Template();
+
+use vars qw(@return);
+sub returning { push @return , @_ }
+
+ sub Callback::thesub {()} # return empty list
+
+ sub eachitem_callback_1
+ {
+     local @return;
+
+     foreach my $item (qw(one two three))
+     {   returning eachitem::eachitem($item);
+     }
+     @return;
+ }
+
+ sub eachitem_callback_2
+ {
+     local @return;
+
+     open TTY , "+</dev/tty" or die "open TTY , +</dev/tty: $!";
+     print TTY "Please enter a line containing a word:\n";
+     while (<TTY>)
+     {  my ($item) = m/(\w+)/;
+        returning eachitem::eachitem($item);
+     }
+     close TTY;
+     @return;
+ }
+
+
+
+ sub Callback::callit1
+ {
+    local *Callback::eachitem = \&eachitem_callback_1;
+    return thesub::thesub();
+ }
+
+ sub Callback::callit2
+ {
+    local *Callback::eachitem = \&eachitem_callback_2;
+    return thesub::thesub(\@items);
+ }

@@ -1,0 +1,3 @@
+my @tags = (qw( list1 list2 var));
+\@tags;
+

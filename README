@@ -1,0 +1,85 @@
+Template::Averse
+
+You may have a bit of an aversion to considering yet Another Variable
+Extraction Replacement Substitution Environment (i.e. a template module).
+
+This was originally part of an experiment to test an idea for a template
+system in which each template would be built using two "parallel" parts -
+one side containing nothing but visual stuff and the other side containing
+nothing but the logic stuff.  One could imagine them side by side
+
+    <table>     |    sub table
+    <row>       |    for each row
+        data    |        provide the data
+    </row>      |    end of row
+    </table>    |    end of sub
+
+Anyway, that didn't work.
+
+However, the result when combined with xml parsing is practical enough to
+use, and might be different enough to warrant posting.
+
+Each template requires three parts.  The template body, xml is easiest but
+anything can be handled; the template logic, implemented by perl subs
+called "callbacks";  and a mapping between the two called the "component
+definitions".  The unit of interest is a "component", which corresponds to
+a (possibly nested) region of the template body plus the callback sub that
+implements its logic.
+
+The examples work.   The compiled templates are kinda pretty and compile
+with strict and warnings.  You need a SAX parser to use xml - I used the
+one that requires libxml.  The install does not have a test section yet.
+
+SHORTENED EXAMPLE
+
+    THE TEMPLATE BODY
+    (Yes, there's no way to know which region is the component by simply
+    looking at the template body.)
+  
+    <table>
+    <tr>
+        <td> One of the values is {+$one_variable+} </td>
+        <td> The other value is {+$another+} </td>
+    </tr>
+    </table>
+
+    THE TEMPLATE CALLBACK 
+    (The programmer has to write this, but stubs can be generated.)
+
+    sub Callback::Tr
+    {
+        local @return;
+        foreach my $x (1..8) # nothing special about this data
+        {
+            returning Tr::Tr($x,$x*2);
+        }
+        @return;
+    }
+
+If you don't like perl variables in the template then that's ok, it's
+pretty simple to define a nice kocher xml-ish <var> tag if you prefer.
+
+TEMPLATE COMPILER(S)
+
+The distribution includes an xml and a non-xml template compiler.  These
+can be used to convert a template into a standalone unit of perl code that
+can be used later by the rest of your program.
+
+The compilers are also working examples of how a program can use Averse to
+parse and compile a template (in case the pod examples don't make sense).
+
+    averse-tcc      - template compiler, non-XML
+    
+    averse-tcxml    - template compiler, XML (uses SAX)
+
+
+MORE EXAMPLES and DOCUMENTATION
+
+    Averse.pod
+    
+    Various eg* files included in the distribution.
+
+    perldoc Template::Averse
+
+    For more examples read the Averse.pod file at the end.
+

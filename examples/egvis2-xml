@@ -1,0 +1,10 @@
+ <example-of-visual-subroutine>
+ <thesub>
+    <ol><eachitem><li>The item was {+ $item +}</li>
+        </eachitem>
+    </ol>
+ </thesub>
+ The first list goes here <callit1/>, <br/>
+ and then the second list goes next<br/>
+    <callit2/>
+ </example-of-visual-subroutine>

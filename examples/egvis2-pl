@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+# this runs the compiled eg1 template
+# compile and run the template as follows
+
+#  $ perl averse-tcxml egvis2-defns egvis2-xml > egvis2.do
+#  $ perl egvis1-pl
+
+do "egvis2.do";
+
+print Template::Template();
+
+use vars qw(@return);
+sub returning { push @return , @_ }
+
+ sub Callback::thesub {()} # return empty list
+
+ sub Callback::callit1
+ {
+    my @items = qw(one two three);
+    return thesub::thesub(\@items);
+ }
+
+ sub Callback::callit2
+ {
+    my @items = qw(x y z);
+    return thesub::thesub(\@items);
+ }
+
+ sub Callback::eachitem
+ {   my ($context)=@_;
+     local @return;
+
+     my $items = ${$context->{Vars}{'$items'}}; # note ref of ref
+     foreach my $item (@$items)
+     {   returning eachitem::eachitem($item);
+     }
+     @return;
+ }
+

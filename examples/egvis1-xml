@@ -1,0 +1,9 @@
+ <example-of-visual-subroutine>
+ <thesub>
+    <table><tr><th>Name     </th><th>Title     </th></tr>
+           <tr><td>{+$name+}</td><td>{+$title+}</td></tr>
+    </table>
+ </thesub>
+ Info on the boss <br/> <showboss/> <br/>
+ and the janitor is <br/> <showjanitor/> <br/>
+ </example-of-visual-subroutine>

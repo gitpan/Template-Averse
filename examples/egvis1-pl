@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+
+# this runs the compiled eg1 template
+# compile and run the template as follows
+
+#  $ perl averse-tcxml egvis1-defns egvis1-xml > egvis1.do
+#  $ perl egvis1-pl
+
+do "egvis1.do";
+
+print Template::Template();
+
+use vars qw(@return);
+sub returning { push @return , @_ }
+
+ sub Callback::thesub {()} # return empty list at point of definition
+
+ sub Callback::showboss
+ {  return thesub::thesub('Mr Big Guy','Head Honcho');
+ }
+
+ sub Callback::showjanitor
+ {  return thesub::thesub('Frank Handy','Head Honcho');
+ }

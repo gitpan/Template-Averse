@@ -1,0 +1,25 @@
+# notes on the brackets in the markers
+
+
+# (tag)   : the length of $1 is skipped.  The effect is that </tr> is 
+#           included in (at the the end) of the component.
+
+# (?=tag) : look ahead means that this matches a zero length string
+#           just before the component.  The effect is that the <tr>
+#           is included in (at the beginning) of the component.
+
+# unused format
+# tag     : with no brackets, the text matched by tag would be the tag,
+#           and that text would _not_ be included in any component.
+
+# the capturing ()'s must be at the start of the marker, but do not need
+# to be its entire length.  They can be used to skip just a portion of
+# the matched text.
+
+my %tags = ( Tr => { start => '(?=<tr>)',  # <- actually regular
+                     end   => '(</tr>)',   # <-      expressions
+                     vars  => [qw( $arg1 $arg2 )],
+                   }
+           );
+
+\%tags;

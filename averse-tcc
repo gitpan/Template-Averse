@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+
+use strict;
+use Template::Averse::Parser;
+use Template::Averse::Compiler;
+use Template::Averse::CallbackStubs;
+
+my %opts;
+my $optf='hc';     # flag options
+my $optv='n';       # value options, h works until there are some
+while ($ARGV[0] =~ m/^-([$optf]*[$optv]?)(?<!-)(.*)$/ )
+{  shift; map{$opts{$_}=/[$optf]/?$opts{$_}+1:$2||shift} split('',$1); }
+
+die "Usage: $0 [$optf] component-defines[.pm] [template-text]
+Where:  -h      this help
+        -c      display callbacks
+        -n      template name
+" if $opts{h} or @ARGV<1;
+
+#-------------------------------------
+
+my ($defines) = shift;
+my ($top) = $opts{'n'};
+
+my $components = require $defines;
+
+my $compiler ;
+
+if ($opts{'c'})
+{   $compiler = new Template::Averse::CallbackStubs($components,$top);
+}else
+{   $compiler = new Template::Averse::Compiler($components,$top);
+}
+
+my $parser   = new Template::Averse::Parser($components,$compiler);
+
+my $lines = do {local $/=undef; <>};
+
+$parser->parse($lines);
+
+my @code = $compiler->print_code();
+
+print @code;
+
+eval "@code";
+print $@,$/ if $@;
+
+die $@ if $@;

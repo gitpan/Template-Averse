@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+use strict;
+use XML::SAX::ParserFactory;
+use Template::Averse::SAXHandler;
+use Template::Averse::Compiler;
+use Template::Averse::CallbackStubs;
+
+my %opts;
+my $optf='hc';     # flag options
+my $optv='n';       # value options, h works until there are some
+while ($ARGV[0] =~ m/^-([$optf]*[$optv]?)(?<!-)(.*)$/ )
+{  shift; map{$opts{$_}=/[$optf]/?$opts{$_}+1:$2||shift} split('',$1); }
+
+die "Usage: $0 [$optf] component-defines.pm template.xml
+Where:  -h      this help
+        -c      display callbacks
+        -n      template name
+" if $opts{h} or @ARGV<2;
+
+#-------------------------------------
+
+my ($defines,$xml_file) = @ARGV;
+my ($top) = $opts{'n'};
+
+my $components = require $defines;
+
+open XML , $xml_file or die "open: $xml_file: $!";
+
+my $compiler;
+
+if ( $opts{'c'} )
+{   $compiler = new Template::Averse::CallbackStubs($components,$top)
+}else
+{   $compiler = new Template::Averse::Compiler($components,$top);
+}
+
+my $handler = new Template::Averse::SAXHandler($compiler);
+
+my $p = XML::SAX::ParserFactory->parser(Handler => $handler);
+
+$p->parse_file(\*XML);
+
+my @code = $compiler->print_code();
+
+print @code;
+
+eval "@code";
+print $@,$/ if $@;
+
+die $@ if $@;

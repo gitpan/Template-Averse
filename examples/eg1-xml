@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>Example for Averse compiler
+</title>
+</head>
+<body>
+<p>Example table
+
+<table>
+<tr>
+    <td> Value 1 is {+$arg1+} </td>
+    <td> the second value is {+$arg2+} </td>
+</tr>
+</table>
+
+</p>
+</body>
+</html>

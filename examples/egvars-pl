@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+
+# this examples shows scoped template variables where the variable
+# is accessed via a tag (in this example, <var name="x"/>
+
+# this runs the compiled egvars template
+# compile and run the template as follows
+
+#  $ perl averse-tcxml egvars-df egvars-xml > egvars.do
+#  $ perl egvars-pl
+
+do "egvars.do";
+
+print Template::Template();
+
+# nice idiom
+use vars qw(@return);
+sub returning { push @return , @_ }
+
+# SUPPORT FOR SCOPED VARIABLES via a <var name="x"> tag
+# The name of the variable comes from the `name=' attribute of the tag, which
+# is accessible to the callback via the context of the component.
+# The scope will come from perl local.  A routine that sets any variables
+# must include `local %vars=%vars' to make this work.
+
+use vars qw(%vars);
+sub Callback::var { my $ctx=shift; $vars{ $ctx->{'-attributes'}{name} } }
+
+# Create some values for the variables.
+
+sub Callback::list1
+{
+    local @return;
+    local %vars=%vars;      # scope for the <var/> tag variables
+
+    foreach ('A'..'H')
+    {   
+        $vars{'x'} = "X:$_";
+        $vars{'y'} = "Y:$_";
+
+        returning list1::list1();
+    }
+    @return;
+}
+
+sub Callback::list2
+{
+    local @return;
+    local %vars=%vars;      # scope for the <var/> tag variables
+
+    foreach (1..4)
+    {   
+        $vars{'y'} = "y:$_";
+        $vars{'z'} = "z:$_";
+
+        returning list2::list2();
+    }
+    @return;
+}
+
+

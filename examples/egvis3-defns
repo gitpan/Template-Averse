@@ -1,0 +1,6 @@
+ my %tags = ( thesub  => { },
+              eachitem=> { vars=>[qw($item)] },
+              callit1 => {},
+              callit2 => {},
+            );
+ \%tags;

@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+
+# this runs the compiled eg2 template (same as eg1 but parsed differently)
+# compile and run the template as follows
+
+#  $ perl averse-tcc eg2-defns eg1-xml > eg2.do
+#  $ perl eg2-pl
+
+do "eg2.do";
+
+print Template::Template();
+
+use vars qw(@return);
+sub returning { push @return , @_ }
+
+sub Callback::Tr
+{
+    local @return;
+    foreach my $x (1..8)
+    {
+        returning Tr::Tr($x,$x*2);
+    }
+    @return;
+}

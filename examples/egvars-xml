@@ -1,0 +1,5 @@
+<example-of-vars>
+<list1> <var name="x"/> <var name="y"/>
+<list2> <var name="x"/> <var name="y"/> <var name="z"/>
+</list2></list1>
+</example-of-vars>
